@@ -11,6 +11,7 @@ import {
 } from 'class-validator';
 import { WeightClass } from '../../../../common/weight-class.enum';
 import { ApiProperty } from '@nestjs/swagger';
+import { Transform } from 'class-transformer';
 
 @InputType()
 export class CreateFighterInput {
@@ -34,6 +35,7 @@ export class CreateFighterInput {
 
   @ApiProperty({ description: 'Date of birth of the fighter' })
   @Field(() => Date)
+  @Transform(({ value }) => new Date(value))
   @IsDate()
   dateOfBirth: Date;
 
