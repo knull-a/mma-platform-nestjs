@@ -1,26 +1,42 @@
-FROM node:18-alpine AS build
+FROM node:20-alpine AS build
 
 WORKDIR /app
 
-COPY package*.json ./
+# Install pnpm
+RUN npm install -g pnpm
 
-RUN npm install
+# Copy package files
+COPY package.json pnpm-lock.yaml* ./
 
+# Install dependencies
+RUN pnpm install --frozen-lockfile
+
+# Copy source code
 COPY . .
 
-RUN npm run build
+# Build the application
+RUN pnpm build
 
-FROM node:18-alpine AS production
+# Production stage
+FROM node:20-alpine AS production
 
 WORKDIR /app
 
-COPY --from=build /app/package*.json ./
+# Install pnpm for production
+RUN npm install -g pnpm
+
+# Copy package files and install only production dependencies
+COPY package.json pnpm-lock.yaml* ./
+RUN pnpm install --prod --frozen-lockfile
+
+# Copy built application from build stage
 COPY --from=build /app/dist ./dist
-COPY --from=build /app/node_modules ./node_modules
 
 # Copy migration files
 COPY --from=build /app/src/database/migrations ./dist/database/migrations
 
 EXPOSE 3000
 
-CMD ["node", "dist/main"]
+# Crypto polyfill
+RUN echo 'if (typeof globalThis.crypto === "undefined") { globalThis.crypto = require("crypto"); }' > /app/crypto-polyfill.js
+CMD ["node", "-r", "/app/crypto-polyfill.js", "dist/src/main"]
