@@ -57,8 +57,4 @@ export class Fighter extends BaseEntity {
   @Field(() => Int, { nullable: true })
   @Column({ type: 'int', nullable: true, name: 'current_ranking' })
   currentRanking?: number;
-
-  @Field(() => String, { nullable: true })
-  @Column({ nullable: true, name: 'profile_image_url' })
-  profileImageUrl?: string;
 }

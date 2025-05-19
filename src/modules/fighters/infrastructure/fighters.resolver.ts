@@ -60,7 +60,7 @@ export class FightersResolver {
   async fighterStats(
     @Args('id', { type: () => ID }) id: string,
   ): Promise<FighterStats> {
-    const fighter = await this.fighterRepository.findOneOrFail({ 
+    const fighter = await this.fighterRepository.findOneOrFail({
       where: { id },
     });
     return {
@@ -75,7 +75,7 @@ export class FightersResolver {
       knockouts: fighter.knockouts,
       submissions: fighter.submissions,
       winPercentage: this.calculateWinPercentage(fighter),
-      currentRanking: fighter.currentRanking || null,
+      currentRanking: fighter.currentRanking,
     };
   }
 
@@ -88,17 +88,17 @@ export class FightersResolver {
       relations: ['fighter1', 'fighter2', 'event', 'winner'],
       order: { event: { date: 'DESC' } },
     });
-    
+
     return fights;
   }
 
   @Query(() => [Fighter])
   async fightersByWeightClass(
-    @Args('weightClass', { type: () => WeightClass }) weightClass: WeightClass
+    @Args('weightClass', { type: () => WeightClass }) weightClass: WeightClass,
   ): Promise<Fighter[]> {
     return this.fighterRepository.find({
       where: { weightClass },
-      order: { currentRanking: 'ASC' }
+      order: { currentRanking: 'ASC' },
     });
   }
 
