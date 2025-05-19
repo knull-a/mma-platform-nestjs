@@ -2,7 +2,7 @@ import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Fighter } from '../domain/fighter.entity';
-import { CreateFighterInput } from './dto/create-fighter.input';
+import { CreateFighterInput } from '../application/dto/create-fighter.input';
 import { UpdateFighterInput } from './dto/update-fighter.input';
 import { NotFoundException } from '@nestjs/common';
 import { Fight } from '../../fights/domain/fight.entity';
@@ -20,7 +20,9 @@ export class FightersResolver {
 
   @Query(() => [Fighter])
   async fighters(): Promise<Fighter[]> {
-    return this.fighterRepository.find();
+    return this.fighterRepository.find({
+      order: { currentRanking: 'ASC' },
+    });
   }
 
   @Query(() => Fighter)
@@ -83,13 +85,11 @@ export class FightersResolver {
   async fighterHistory(
     @Args('id', { type: () => ID }) id: string,
   ): Promise<Fight[]> {
-    const fights = await this.fightRepository.find({
+    return this.fightRepository.find({
       where: [{ fighter1: { id } }, { fighter2: { id } }],
       relations: ['fighter1', 'fighter2', 'event', 'winner'],
       order: { event: { date: 'DESC' } },
     });
-
-    return fights;
   }
 
   @Query(() => [Fighter])

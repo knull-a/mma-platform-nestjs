@@ -28,7 +28,8 @@ import { DateScalar } from './common/scalars/date.scalar';
       driver: ApolloDriver,
       autoSchemaFile: true,
       playground: process.env.GRAPHQL_PLAYGROUND === 'false' ? false : true,
-      introspection: process.env.GRAPHQL_INTROSPECTION === 'false' ? false : true,
+      introspection:
+        process.env.GRAPHQL_INTROSPECTION === 'false' ? false : true,
     }),
     ScheduleModule.forRoot(),
     FightersModule,
