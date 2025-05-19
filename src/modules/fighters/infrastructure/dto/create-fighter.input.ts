@@ -1,23 +1,35 @@
 import { InputType, Field } from '@nestjs/graphql';
-import { IsString, IsInt, Min, Max } from 'class-validator';
+import { IsString, IsInt, IsOptional, IsISO8601 } from 'class-validator';
 import { WeightClass } from '../../../../common/weight-class.enum';
 
 @InputType()
 export class CreateFighterInput {
   @Field()
   @IsString()
-  name: string;
+  firstName: string;
 
   @Field()
   @IsString()
-  nickname: string;
+  lastName: string;
+
+  @Field(() => String, { nullable: true })
+  @IsString()
+  @IsOptional()
+  nickname?: string;
+
+  @Field(() => String)
+  @IsISO8601()
+  dateOfBirth: string;
 
   @Field()
-  @IsInt()
-  @Min(18)
-  @Max(60)
-  age: number;
+  @IsString()
+  nationality: string;
 
   @Field(() => WeightClass)
   weightClass: WeightClass;
+
+  @Field(() => Number, { nullable: true })
+  @IsInt()
+  @IsOptional()
+  currentRanking?: number;
 }

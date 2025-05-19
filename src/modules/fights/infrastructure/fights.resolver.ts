@@ -48,8 +48,9 @@ export class FightsResolver {
     return await this.fightsService.recordResult(id, result, winnerId);
   }
 
-  @Mutation(() => Fight)
-  async removeFight(@Args('id') id: string): Promise<Fight> {
-    return await this.fightsService.remove(id);
+  @Mutation(() => Boolean)
+  async removeFight(@Args('id') id: string): Promise<boolean> {
+    await this.fightsService.remove(id);
+    return true;
   }
 } 

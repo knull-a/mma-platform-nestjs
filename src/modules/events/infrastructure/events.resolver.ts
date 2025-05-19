@@ -38,8 +38,9 @@ export class EventsResolver {
     return await this.eventsService.update(id, updateEventInput);
   }
 
-  @Mutation(() => Event)
-  async removeEvent(@Args('id') id: string): Promise<Event> {
-    return await this.eventsService.remove(id);
+  @Mutation(() => Boolean)
+  async removeEvent(@Args('id') id: string): Promise<boolean> {
+    await this.eventsService.remove(id);
+    return true;
   }
 } 

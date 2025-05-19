@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Fight } from '../domain/fight.entity';
@@ -16,8 +20,33 @@ export class FightsService {
   ) {}
 
   async create(createFightInput: CreateFightInput): Promise<Fight> {
-    const fight = this.fightsRepository.create(createFightInput);
-    return await this.fightsRepository.save(fight);
+    // Create a new fight entity with the proper structure
+    const fight = this.fightsRepository.create({
+      fighter1: { id: createFightInput.fighter1Id },
+      fighter2: { id: createFightInput.fighter2Id },
+      event: { id: createFightInput.eventId },
+      weightClass: createFightInput.weightClass,
+      rounds: createFightInput.rounds,
+      isCompleted: false,
+      isRankingUpdated: false,
+    });
+
+    // Save the fight
+    const savedFight = await this.fightsRepository.save(fight);
+
+    // Reload the fight with all relations to ensure we have complete data
+    const loadedFight = await this.fightsRepository.findOne({
+      where: { id: savedFight.id },
+      relations: ['fighter1', 'fighter2', 'event', 'winner'],
+    });
+
+    if (!loadedFight) {
+      throw new NotFoundException(
+        `Fight with ID ${savedFight.id} not found after creation`,
+      );
+    }
+
+    return loadedFight;
   }
 
   async findAll(): Promise<Fight[]> {
@@ -50,19 +79,27 @@ export class FightsService {
     return await this.fightsRepository.save(fight);
   }
 
-  async recordResult(id: string, result: FightResult, winnerId: string): Promise<Fight> {
+  async recordResult(
+    id: string,
+    result: FightResult,
+    winnerId: string,
+  ): Promise<Fight> {
     const fight = await this.findOne(id);
-    
+
     if (fight.isCompleted) {
       throw new BadRequestException('Fight result has already been recorded');
     }
 
     if (fight.fighter1.id !== winnerId && fight.fighter2.id !== winnerId) {
-      throw new BadRequestException('Winner must be one of the fighters in the match');
+      throw new BadRequestException(
+        'Winner must be one of the fighters in the match',
+      );
     }
 
-    const winner = fight.fighter1.id === winnerId ? fight.fighter1 : fight.fighter2;
-    const loser = fight.fighter1.id === winnerId ? fight.fighter2 : fight.fighter1;
+    const winner =
+      fight.fighter1.id === winnerId ? fight.fighter1 : fight.fighter2;
+    const loser =
+      fight.fighter1.id === winnerId ? fight.fighter2 : fight.fighter1;
 
     fight.result = result;
     fight.winner = winner;
@@ -80,4 +117,4 @@ export class FightsService {
     const fight = await this.findOne(id);
     return await this.fightsRepository.remove(fight);
   }
-} 
+}
