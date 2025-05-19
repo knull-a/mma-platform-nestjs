@@ -1,4 +1,4 @@
-import { Column, Entity, OneToMany } from 'typeorm';
+import { Column, Entity } from 'typeorm';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { BaseEntity } from '../../../common/base.entity';
 import { WeightClass } from '../../../common/weight-class.enum';
@@ -50,12 +50,15 @@ export class Fighter extends BaseEntity {
   @Column({
     type: 'enum',
     enum: WeightClass,
-    name: 'weight_class'
+    name: 'weight_class',
   })
   weightClass: WeightClass;
 
   @Field(() => Int, { nullable: true })
   @Column({ type: 'int', nullable: true, name: 'current_ranking' })
   currentRanking?: number;
+
+  @Field(() => String, { nullable: true })
+  @Column({ nullable: true, name: 'profile_image_url' })
+  profileImageUrl?: string;
 }
- 
