@@ -19,42 +19,26 @@
 8. Implemented the ranking algorithm service
 9. Set up background processing for rankings with scheduler
 10. Added validation for inputs using class-validator
-12. Implemented Events module with GraphQL resolver and service
-13. Implemented Fights module with GraphQL resolver and service
-14. Implemented Rankings module with GraphQL resolver and service
-15. Implemented ranking algorithm with points-based system
+11. Implemented Events module with GraphQL resolver and service
+12. Implemented Fights module with GraphQL resolver and service
+13. Implemented Rankings module with GraphQL resolver and service
+14. Implemented ranking algorithm with points-based system
+15. Created ERD diagram for database schema
+16. Completed GraphQL resolvers for Fighters module
+17. Added queries for fighter statistics and fight histories
+18. Added queries for upcoming events and fight cards with detailed information
+19. Documented the ranking algorithm in detail
+20. Added API usage documentation with GraphQL queries
+21. Added setup and deployment instructions
+22. Set up proper migration strategy instead of synchronize: true
 
 ## 📋 Remaining Tasks
 
-1. **Database & Schema**:
-   - Create ERD diagram using draw.io, Lucidchart, or similar
-   - Complete SQL Create statements for all tables
-   - Set up proper migration strategy instead of synchronize: true
-
-2. **GraphQL API Implementation**:
-   - Complete resolvers for Fighters module
-   - Add queries for fighter statistics and fight histories
-   - Add queries for upcoming events and fight cards with detailed information
-
-3. **Ranking Algorithm**:
-   - Document the ranking algorithm in detail
-   - Add more sophisticated tiebreaker rules
-   - Test the ranking algorithm thoroughly
-
-4. **Testing**:
+1. **Testing**:
    - Write unit tests for services and resolvers
    - Create integration tests for the API
    - Test the ranking algorithm
 
-5. **Documentation**:
-   - Document API usage with GraphQL queries
-   - Add setup and deployment instructions
-   - Document the ranking algorithm
-
-6. **Error Handling & Validation**:
-   - Implement more comprehensive error handling
-   - Add more detailed validation rules
-
-7. **Deployment**:
+2. **Deployment**:
    - Configure Docker Compose for the full stack (app and database)
-   - Set up production environment variables 
+   - Set up production environment variables
