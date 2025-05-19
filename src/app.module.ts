@@ -27,8 +27,8 @@ import { DateScalar } from './common/scalars/date.scalar';
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: true,
-      playground: true,
-      introspection: true,
+      playground: process.env.GRAPHQL_PLAYGROUND === 'false' ? false : true,
+      introspection: process.env.GRAPHQL_INTROSPECTION === 'false' ? false : true,
     }),
     ScheduleModule.forRoot(),
     FightersModule,
