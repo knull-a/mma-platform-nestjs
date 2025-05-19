@@ -4,7 +4,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { ScheduleModule } from '@nestjs/schedule';
-import { AppService } from './app.service';
 import databaseConfig from './config/database.config';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { FightersModule } from './modules/fighters/fighters.module';
@@ -37,6 +36,6 @@ import { DateScalar } from './common/scalars/date.scalar';
     FightsModule,
     RankingsModule,
   ],
-  providers: [AppService, DateScalar],
+  providers: [DateScalar],
 })
 export class AppModule {}
