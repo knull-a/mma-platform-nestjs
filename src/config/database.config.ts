@@ -11,3 +11,4 @@ export default registerAs('database', () => ({
   synchronize: false,
   logging: process.env.NODE_ENV !== 'production',
 }));
+ 

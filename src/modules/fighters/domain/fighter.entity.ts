@@ -58,3 +58,4 @@ export class Fighter extends BaseEntity {
   @Column({ type: 'int', nullable: true, name: 'current_ranking' })
   currentRanking?: number;
 }
+ 

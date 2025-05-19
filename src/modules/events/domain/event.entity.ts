@@ -21,3 +21,4 @@ export class Event extends BaseEntity {
   @Column({ nullable: true })
   description?: string;
 }
+ 

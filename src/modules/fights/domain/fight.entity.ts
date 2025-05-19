@@ -57,3 +57,4 @@ export class Fight extends BaseEntity {
   @Column({ default: false, name: 'is_ranking_updated' })
   isRankingUpdated: boolean;
 }
+ 

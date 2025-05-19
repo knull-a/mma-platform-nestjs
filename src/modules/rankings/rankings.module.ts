@@ -1,18 +1,12 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Ranking } from './domain/ranking.entity';
-import { FightersModule } from '../fighters/fighters.module';
-import { Fight } from '../fights/domain/fight.entity';
-import { RankingService } from './application/ranking.service';
-import { RankingProcessorScheduler } from './infrastructure/ranking-processor.scheduler';
-import { Fighter } from '../fighters/domain/fighter.entity';
+import { RankingsResolver } from './infrastructure/rankings.resolver';
+import { RankingsService } from './application/rankings.service';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([Ranking, Fight, Fighter]),
-    FightersModule,
-  ],
-  providers: [RankingService, RankingProcessorScheduler],
-  exports: [TypeOrmModule, RankingService],
+  imports: [TypeOrmModule.forFeature([Ranking])],
+  providers: [RankingsResolver, RankingsService],
+  exports: [RankingsService],
 })
 export class RankingsModule {}
